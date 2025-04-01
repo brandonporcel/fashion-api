@@ -1,9 +1,7 @@
 import { PrismaClient } from '@prisma/client';
-import ck from 'chalk';
-import { QUOTES } from './seed/';
+import { BRANDS, COLLECTIONS, CRITICS, DESIGNERS, QUOTES, TAGS } from './data';
 
 const prisma = new PrismaClient();
-
 async function main() {
   QUOTES.forEach(async (quote) => {
     await prisma.quote.upsert({
@@ -17,7 +15,48 @@ async function main() {
       },
     });
   });
-  console.log(ck.green('Seed executed successfully! 🚀'));
+  BRANDS.forEach(async (quote) => {
+    await prisma.brand.upsert({
+      where: { slug: quote.slug },
+      update: {},
+      create: {
+        name: quote.name,
+        slug: quote.slug,
+        description: quote.description,
+      },
+    });
+  });
+  TAGS.forEach(async (tag) => {
+    await prisma.tag.upsert({
+      where: { slug: tag.slug },
+      update: {},
+      create: {
+        name: tag.name,
+        slug: tag.slug,
+      },
+    });
+  });
+
+  await prisma.critic.deleteMany({});
+  await prisma.critic.createMany({ data: CRITICS });
+
+  await prisma.collection.deleteMany({});
+  await prisma.collection.createMany({ data: COLLECTIONS });
+
+  DESIGNERS.forEach(async (dsg) => {
+    await prisma.designer.upsert({
+      where: { slug: dsg.slug },
+      update: {},
+      create: {
+        name: dsg.name,
+        slug: dsg.slug,
+        dateOfBirth: dsg.dateOfBirth,
+        dateOfDeath: dsg.dateOfDeath,
+      },
+    });
+  });
+
+  console.log('Seed executed successfully! 🚀');
 }
 main()
   .then(async () => {

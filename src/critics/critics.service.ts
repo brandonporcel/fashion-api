@@ -3,23 +3,27 @@ import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
-export class QuotesService {
+export class CriticsService {
   constructor(private readonly prismaService: PrismaService) {}
+
   async findAll(paginationDto: PaginationDto) {
     const { limit = 10, offset = 0 } = paginationDto;
 
-    const quotes = await this.prismaService.quote.findMany({
+    const critics = await this.prismaService.critic.findMany({
       take: limit,
       skip: offset,
     });
 
-    return quotes;
+    return critics;
   }
 
-  async findOne(id: number) {
-    const quote = await this.prismaService.quote.findUnique({ where: { id } });
-    if (!quote) throw new NotFoundException(`Quote with id ${id} not found`);
+  async findOne(id: string) {
+    const critic = await this.prismaService.critic.findUnique({
+      where: { id },
+    });
 
-    return quote;
+    if (!critic) throw new NotFoundException(`Critic not found`);
+
+    return critic;
   }
 }
