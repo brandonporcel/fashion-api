@@ -87,7 +87,16 @@ npm run start:dev
 ## 📋 TODO List
 
 - [ ] Make sdk.
-- [ ] Implement authentication for favorites.
+- [ ] Implement authentication for users to complete database.
+- [ ] Endpoint icons personalies in fashion (maradona, denis rodman, etc).
+- [ ] runway_designers. uuid, runway_id (FK), designer_id (FK), created_at, updated_at. un diseñador puede trabajara para distintas marcas, runways
+- [ ] chequear como hacer con las imagenes de runways, critics
+- [ ] designer_tags
+- [ ] Buzqueda indezada (https://youtu.be/Osy0yuxuEOw?si=ZrZ6mBrukJHTNmf9)
+- [ ] que los contributors puedan dar detalles sobre x imagen de desfile como genius. check imagenes
+- [ ] en un futuro laburar con insignias como musixmatch
+- [ ] usar cloudinary
+- [ ] host a db https://www.linkedin.com/posts/midudev_hostings-para-tu-base-de-datos-sin-pagar-activity-7219683962527330304-ZQ37/
 
 ## Technologies Used
 

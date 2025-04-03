@@ -13,6 +13,129 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id                String              @id @default(uuid())
+  username          String              @unique @db.VarChar(100)
+  createdAt         DateTime            @default(now()) @map("created_at")
+  updatedAt         DateTime            @updatedAt @map("updated_at")
+  role              UserRole            @default(USER)
+  RunwayContributor RunwayContributor[]
+
+  @@map("users")
+}
+
+model Designer {
+  id          String    @id @default(uuid())
+  name        String    @db.VarChar(100)
+  slug        String    @unique @db.VarChar(100)
+  description String?
+  dateOfBirth DateTime  @map("date_of_birth")
+  dateOfDeath DateTime? @map("date_of_death")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  DesignerRunway DesignerRunway[]
+
+  @@map("designers")
+}
+
+model Runway {
+  id           String   @id @default(uuid())
+  date         DateTime
+  link         String   @unique
+  slug         String   @unique @db.VarChar(150)
+  description  String?
+  collectionId String
+  brandId      String
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  collection        Collection          @relation(fields: [collectionId], references: [id])
+  brand             Brand               @relation(fields: [brandId], references: [id])
+  tags              RunwayTag[]
+  DesignerRunway    DesignerRunway[]
+  RunwayContributor RunwayContributor[]
+
+  @@index([date])
+  @@map("runways")
+}
+
+model RunwayContributor {
+  id       String @id @default(uuid())
+  runwayId String @map("runway_id")
+  userId   String @map("user_id")
+
+  runway Runway @relation(fields: [runwayId], references: [id])
+  User   User   @relation(fields: [userId], references: [id])
+}
+
+model DesignerRunway {
+  id         String @id @default(uuid())
+  designerId String @map("designer_id")
+  runwayId   String @map("runway_id")
+
+  Designer Designer @relation(fields: [designerId], references: [id])
+  Runway   Runway   @relation(fields: [runwayId], references: [id])
+
+  @@unique([designerId, runwayId])
+  @@map("designer_runways")
+}
+
+model Collection {
+  id        String         @id @default(uuid())
+  year      Int
+  type      CollectionType
+  gender    GenderType     @default(FEMALE)
+  createdAt DateTime       @default(now()) @map("created_at")
+  updatedAt DateTime       @updatedAt @map("updated_at")
+
+  Runway        Runway[]
+  UnfoundRunway UnfoundRunway[]
+
+  @@unique([year, type, gender])
+  @@index([year])
+  @@map("collections")
+}
+
+model Brand {
+  id          String   @id @default(uuid())
+  name        String   @db.VarChar(100)
+  slug        String   @unique @db.VarChar(100)
+  description String
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  Runway        Runway[]
+  UnfoundRunway UnfoundRunway[]
+
+  @@map("brands")
+}
+
+model UnfoundRunway {
+  id           String     @id @default(uuid())
+  link         String     @unique
+  brandId      String
+  collectionId String
+  createdAt    DateTime   @default(now()) @map("created_at")
+  updatedAt    DateTime   @updatedAt @map("updated_at")
+  Brand        Brand      @relation(fields: [brandId], references: [id])
+  Collection   Collection @relation(fields: [collectionId], references: [id])
+
+  @@map("unfound_runways")
+}
+
+model Critic {
+  id          String     @id @default(uuid())
+  name        String
+  instagram   String?
+  youtube     String?
+  website     String?
+  description String
+  type        CriticType @default(INFLUENCER)
+
+  @@map("critics")
+}
+
 model Quote {
   id         Int      @id @default(autoincrement())
   text       String
@@ -23,4 +146,54 @@ model Quote {
   updatedAt  DateTime @updatedAt @map("updated_at")
 
   @@map("quotes")
+}
+
+model Tag {
+  id   String @id @default(uuid())
+  name String @db.VarChar(100)
+  slug String @unique @db.VarChar(50)
+
+  runways RunwayTag[]
+
+  @@map("tags")
+}
+
+model RunwayTag {
+  id        String   @id @default(uuid())
+  runwayId  String   @map("runway_id")
+  tagId     String   @map("tag_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  Runway Runway @relation(fields: [runwayId], references: [id])
+  Tag    Tag    @relation(fields: [tagId], references: [id])
+
+  @@unique([runwayId, tagId])
+  @@map("runway_tags")
+}
+
+enum CriticType {
+  INFLUENCER @map("influencer")
+  MAGAZINE   @map("magazine")
+  BLOGGER    @map("blogger")
+}
+
+enum CollectionType {
+  RESORT         @map("resort")
+  PRE_FALL       @map("pre_fall")
+  SS_RTW         @map("spring_summer_ready_to_wear")
+  FW_RTW         @map("fall_winter_ready_to_wear")
+  FALL_COUTURE   @map("fall_couture")
+  SPRING_COUTURE @map("spring_couture")
+}
+
+enum GenderType {
+  FEMALE @map("female")
+  MALE   @map("male")
+  UNISEX @map("unisex")
+}
+
+enum UserRole {
+  USER  @map("user")
+  ADMIN @map("admin")
 }

@@ -1,42 +1,23 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { QuotesService } from './quotes.service';
-import { CreateQuoteDto } from './dto/create-quote.dto';
-import { UpdateQuoteDto } from './dto/update-quote.dto';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
 @Controller('quotes')
+@ApiTags('Quotes')
 export class QuotesController {
   constructor(private readonly quotesService: QuotesService) {}
 
-  @Post()
-  create(@Body() createQuoteDto: CreateQuoteDto) {
-    return this.quotesService.create(createQuoteDto);
-  }
-
   @Get()
-  findAll() {
-    return this.quotesService.findAll();
+  @ApiResponse({ status: 200, description: 'List of all quotes' })
+  findAll(@Query() paginationDto: PaginationDto) {
+    return this.quotesService.findAll(paginationDto);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.quotesService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateQuoteDto: UpdateQuoteDto) {
-    return this.quotesService.update(+id, updateQuoteDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.quotesService.remove(+id);
+  @ApiResponse({ status: 200, description: 'Quote found' })
+  @ApiResponse({ status: 404, description: 'Quote not found' })
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.quotesService.findOne(id);
   }
 }
