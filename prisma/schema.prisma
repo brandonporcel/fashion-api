@@ -34,6 +34,8 @@ model Designer {
   dateOfDeath DateTime? @map("date_of_death")
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @updatedAt @map("updated_at")
+  popularity  Int       @default(0)
+  validated   Boolean   @default(true)
 
   DesignerRunway DesignerRunway[]
 
@@ -41,24 +43,40 @@ model Designer {
 }
 
 model Runway {
-  id           String   @id @default(uuid())
-  date         DateTime
-  link         String   @unique
-  slug         String   @unique @db.VarChar(150)
-  description  String?
-  collectionId String
-  brandId      String
-  createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @updatedAt @map("updated_at")
+  id          String         @id @default(uuid())
+  link        String         @unique
+  slug        String         @unique @db.VarChar(150)
+  collection  CollectionType
+  brandId     String
+  popularity  Int            @default(0)
+  validated   Boolean        @default(true)
+  year        Int
+  createdAt   DateTime       @default(now()) @map("created_at")
+  updatedAt   DateTime       @updatedAt @map("updated_at")
+  description String?
 
-  collection        Collection          @relation(fields: [collectionId], references: [id])
   brand             Brand               @relation(fields: [brandId], references: [id])
   tags              RunwayTag[]
   DesignerRunway    DesignerRunway[]
   RunwayContributor RunwayContributor[]
+  RunwayImage       RunwayImage[]
 
-  @@index([date])
   @@map("runways")
+}
+
+model RunwayImage {
+  id        String   @id @default(uuid())
+  runwayId  String
+  url       String   @db.VarChar(500)
+  publicId  String   @db.VarChar(300)
+  format    String?
+  width     Int?
+  height    Int?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  runway Runway @relation(fields: [runwayId], references: [id])
+
+  @@map("runway_images")
 }
 
 model RunwayContributor {
@@ -68,6 +86,8 @@ model RunwayContributor {
 
   runway Runway @relation(fields: [runwayId], references: [id])
   User   User   @relation(fields: [userId], references: [id])
+
+  @@map("runway_contributors")
 }
 
 model DesignerRunway {
@@ -82,45 +102,25 @@ model DesignerRunway {
   @@map("designer_runways")
 }
 
-model Collection {
-  id        String         @id @default(uuid())
-  year      Int
-  type      CollectionType
-  gender    GenderType     @default(FEMALE)
-  createdAt DateTime       @default(now()) @map("created_at")
-  updatedAt DateTime       @updatedAt @map("updated_at")
-
-  Runway        Runway[]
-  UnfoundRunway UnfoundRunway[]
-
-  @@unique([year, type, gender])
-  @@index([year])
-  @@map("collections")
-}
-
 model Brand {
   id          String   @id @default(uuid())
   name        String   @db.VarChar(100)
   slug        String   @unique @db.VarChar(100)
-  description String
+  description String?
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
+  validated   Boolean  @default(true)
 
-  Runway        Runway[]
-  UnfoundRunway UnfoundRunway[]
+  Runway Runway[]
 
   @@map("brands")
 }
 
 model UnfoundRunway {
-  id           String     @id @default(uuid())
-  link         String     @unique
-  brandId      String
-  collectionId String
-  createdAt    DateTime   @default(now()) @map("created_at")
-  updatedAt    DateTime   @updatedAt @map("updated_at")
-  Brand        Brand      @relation(fields: [brandId], references: [id])
-  Collection   Collection @relation(fields: [collectionId], references: [id])
+  id        String   @id @default(uuid())
+  link      String   @unique
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("unfound_runways")
 }

@@ -1,5 +1,4 @@
 export * from './brands.data';
-export * from './collection.data';
 export * from './critics.data';
 export * from './designers.data';
 export * from './quotes.data';

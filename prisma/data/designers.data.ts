@@ -1,12 +1,14 @@
 export const DESIGNERS = [
   {
-    name: 'Alexander McQueen',
+    name: 'Alexander',
+    lastName: 'McQueen',
     slug: 'alexander_mcqueen',
     dateOfBirth: new Date(),
     dateOfDeath: new Date(),
   },
   {
-    name: 'Coco Chanel',
+    name: 'Coco',
+    lastName: 'Chanel',
     slug: 'coco_chanel',
     dateOfBirth: new Date(),
     dateOfDeath: new Date(),

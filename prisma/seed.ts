@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { BRANDS, COLLECTIONS, CRITICS, DESIGNERS, QUOTES, TAGS } from './data';
+import { BRANDS, CRITICS, DESIGNERS, QUOTES, TAGS } from './data';
 
 const prisma = new PrismaClient();
 async function main() {
@@ -40,15 +40,13 @@ async function main() {
   await prisma.critic.deleteMany({});
   await prisma.critic.createMany({ data: CRITICS });
 
-  await prisma.collection.deleteMany({});
-  await prisma.collection.createMany({ data: COLLECTIONS });
-
   DESIGNERS.forEach(async (dsg) => {
     await prisma.designer.upsert({
       where: { slug: dsg.slug },
       update: {},
       create: {
         name: dsg.name,
+        lastName: dsg.lastName,
         slug: dsg.slug,
         dateOfBirth: dsg.dateOfBirth,
         dateOfDeath: dsg.dateOfDeath,
