@@ -1,7 +1,7 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
 import { Type } from 'class-transformer';
-import { IsOptional, IsPositive, Min } from 'class-validator';
+import { IsOptional, IsPositive, IsString, Min } from 'class-validator';
 
 export class PaginationDto {
   @ApiPropertyOptional({
@@ -22,4 +22,9 @@ export class PaginationDto {
   @Min(0)
   @Type(() => Number)
   offset?: number;
+
+  @ApiPropertyOptional({ description: 'Sort the results' })
+  @IsOptional()
+  @IsString()
+  sort?: string;
 }
