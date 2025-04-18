@@ -1,0 +1,204 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String              @id @default(uuid())
+  username          String              @unique @db.VarChar(100)
+  createdAt         DateTime            @default(now()) @map("created_at")
+  updatedAt         DateTime            @updatedAt @map("updated_at")
+  role              UserRole            @default(USER)
+  RunwayContributor RunwayContributor[]
+
+  @@map("users")
+}
+
+model Designer {
+  id          String    @id @default(uuid())
+  name        String    @db.VarChar(100)
+  lastName    String    @map("last_name") @db.VarChar(100)
+  slug        String    @unique @db.VarChar(100)
+  description String?
+  dateOfBirth DateTime  @map("date_of_birth")
+  dateOfDeath DateTime? @map("date_of_death")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  popularity  Int       @default(0)
+  validated   Boolean   @default(true)
+
+  DesignerRunway DesignerRunway[]
+
+  @@map("designers")
+}
+
+model Runway {
+  id          String         @id @default(uuid())
+  link        String         @unique
+  slug        String         @unique @db.VarChar(150)
+  collection  CollectionType
+  brandId     String
+  popularity  Int            @default(0)
+  validated   Boolean        @default(true)
+  year        Int
+  createdAt   DateTime       @default(now()) @map("created_at")
+  updatedAt   DateTime       @updatedAt @map("updated_at")
+  description String?
+
+  brand             Brand               @relation(fields: [brandId], references: [id])
+  tags              RunwayTag[]
+  DesignerRunway    DesignerRunway[]
+  RunwayContributor RunwayContributor[]
+  RunwayImage       RunwayImage[]
+
+  @@map("runways")
+}
+
+model RunwayImage {
+  id        String   @id @default(uuid())
+  runwayId  String
+  url       String   @db.VarChar(500)
+  publicId  String   @db.VarChar(300)
+  format    String?
+  width     Int?
+  height    Int?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  runway Runway @relation(fields: [runwayId], references: [id])
+
+  @@map("runway_images")
+}
+
+model RunwayContributor {
+  id       String @id @default(uuid())
+  runwayId String @map("runway_id")
+  userId   String @map("user_id")
+
+  runway Runway @relation(fields: [runwayId], references: [id])
+  User   User   @relation(fields: [userId], references: [id])
+
+  @@map("runway_contributors")
+}
+
+model DesignerRunway {
+  id         String @id @default(uuid())
+  designerId String @map("designer_id")
+  runwayId   String @map("runway_id")
+
+  Designer Designer @relation(fields: [designerId], references: [id])
+  Runway   Runway   @relation(fields: [runwayId], references: [id])
+
+  @@unique([designerId, runwayId])
+  @@map("designer_runways")
+}
+
+model Brand {
+  id          String   @id @default(uuid())
+  name        String   @db.VarChar(100)
+  slug        String   @unique @db.VarChar(100)
+  description String?
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  validated   Boolean  @default(true)
+
+  Runway Runway[]
+
+  @@map("brands")
+}
+
+model UnfoundRunway {
+  id        String   @id @default(uuid())
+  link      String   @unique
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("unfound_runways")
+}
+
+model Critic {
+  id          String     @id @default(uuid())
+  name        String
+  instagram   String?
+  youtube     String?
+  website     String?
+  description String
+  type        CriticType @default(INFLUENCER)
+
+  @@map("critics")
+}
+
+model Quote {
+  id         Int      @id @default(autoincrement())
+  text       String
+  author     String
+  source     String
+  sourceLink String   @map("source_link")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@map("quotes")
+}
+
+model Tag {
+  id   String @id @default(uuid())
+  name String @db.VarChar(100)
+  slug String @unique @db.VarChar(50)
+
+  runways RunwayTag[]
+
+  @@map("tags")
+}
+
+model RunwayTag {
+  id        String   @id @default(uuid())
+  runwayId  String   @map("runway_id")
+  tagId     String   @map("tag_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  Runway Runway @relation(fields: [runwayId], references: [id])
+  Tag    Tag    @relation(fields: [tagId], references: [id])
+
+  @@unique([runwayId, tagId])
+  @@map("runway_tags")
+}
+
+enum CriticType {
+  INFLUENCER @map("influencer")
+  MAGAZINE   @map("magazine")
+  BLOGGER    @map("blogger")
+}
+
+enum CollectionType {
+  RESORT         @map("resort")
+  PRE_FALL       @map("pre_fall")
+  SS_RTW         @map("spring_summer_ready_to_wear")
+  FW_RTW         @map("fall_winter_ready_to_wear")
+  FALL_COUTURE   @map("fall_couture")
+  SPRING_COUTURE @map("spring_couture")
+  COUTURE        @map("couture")
+  CAPSULE        @map("capsule")
+  COLLABORATION  @map("collaboration")
+  BRIDAL         @map("bridal")
+}
+
+enum GenderType {
+  FEMALE @map("female")
+  MALE   @map("male")
+  UNISEX @map("unisex")
+}
+
+enum UserRole {
+  USER  @map("user")
+  ADMIN @map("admin")
+}
