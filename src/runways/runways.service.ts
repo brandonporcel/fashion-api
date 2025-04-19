@@ -69,12 +69,12 @@ export class RunwaysService {
   }
 
   async create(createRunwayDto: CreateRunwayDto, files: Express.Multer.File[]) {
-    const api_secret = process.env.CLOUDINARY_API_SECRET;
-    // cloudinary.config({
-    //   cloud_name: 'brandoncloud',
-    //   api_key: '415719737896955',
-    //   api_secret,
-    // });
+    const config = {
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_API_SECRET,
+    };
+    cloudinary.config(config);
 
     const slug = (createRunwayDto.collectionType + '_' + createRunwayDto.year)
       .toLowerCase()
@@ -95,33 +95,28 @@ export class RunwaysService {
       });
 
       for (const file of files) {
-        // const uploadResult: any = await new Promise((resolve, reject) => {
-        //   const uploadStream = cloudinary.uploader.upload_stream(
-        //     {
-        //       folder: 'runways',
-        //       public_id: file.originalname.split('.')[0],
-        //     },
-        //     (error, result) => {
-        //       if (error) return reject(error);
-        //       resolve(result);
-        //     },
-        //   );
-        //   uploadStream.end(file.buffer);
-        // });
+        const uploadResult: any = await new Promise((resolve, reject) => {
+          const uploadStream = cloudinary.uploader.upload_stream(
+            {
+              folder: 'runways',
+              public_id: file.originalname.split('.')[0],
+            },
+            (error, result) => {
+              if (error) return reject(error);
+              resolve(result);
+            },
+          );
+          uploadStream.end(file.buffer);
+        });
 
         await this.prismaService.runwayImage.create({
           data: {
             runwayId: runway.id,
-            url: 'http://res.cloudinary.com/brandoncloud/image/upload/v1744842861/runways/Amazon_2024.png',
-            publicId: 'asdasd',
-            format: 'jpg',
-            width: 200,
-            height: 200,
-            // url: uploadResult.secure_url,
-            // publicId: uploadResult.public_id,
-            // format: uploadResult.format,
-            // width: uploadResult.width,
-            // height: uploadResult.height,
+            url: uploadResult.secure_url,
+            publicId: uploadResult.public_id,
+            format: uploadResult.format,
+            width: uploadResult.width,
+            height: uploadResult.height,
           },
         });
       }
