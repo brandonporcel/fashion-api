@@ -4,8 +4,9 @@ export class Runway implements PRunway {
   id: string;
   link: string;
   slug: string;
+  designerId: string;
   description: string;
-  collection: $Enums.CollectionType;
+  collectionType: $Enums.CollectionType;
   year: number;
   brandId: string;
   popularity: number;

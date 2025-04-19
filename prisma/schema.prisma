@@ -14,61 +14,63 @@ datasource db {
 }
 
 model User {
-  id                String              @id @default(uuid())
-  username          String              @unique @db.VarChar(100)
-  createdAt         DateTime            @default(now()) @map("created_at")
-  updatedAt         DateTime            @updatedAt @map("updated_at")
-  role              UserRole            @default(USER)
-  RunwayContributor RunwayContributor[]
+  id                 String              @id @default(uuid())
+  username           String              @unique @db.VarChar(100)
+  createdAt          DateTime            @default(now()) @map("created_at")
+  updatedAt          DateTime            @updatedAt @map("updated_at")
+  role               UserRole            @default(USER)
+  contributedRunways RunwayContributor[]
 
   @@map("users")
 }
 
 model Designer {
-  id          String    @id @default(uuid())
-  name        String    @db.VarChar(100)
-  lastName    String    @map("last_name") @db.VarChar(100)
-  slug        String    @unique @db.VarChar(100)
-  description String?
-  dateOfBirth DateTime  @map("date_of_birth")
-  dateOfDeath DateTime? @map("date_of_death")
-  createdAt   DateTime  @default(now()) @map("created_at")
-  updatedAt   DateTime  @updatedAt @map("updated_at")
-  popularity  Int       @default(0)
-  validated   Boolean   @default(true)
+  id           String    @id @default(uuid())
+  name         String    @db.VarChar(100)
+  lastName     String    @map("last_name") @db.VarChar(100)
+  slug         String    @unique @db.VarChar(100)
+  thumbnailUrl String
+  dateOfBirth  DateTime  @map("date_of_birth")
+  dateOfDeath  DateTime? @map("date_of_death")
+  popularity   Int       @default(0)
+  validated    Boolean   @default(false)
+  description  String?
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
 
-  DesignerRunway DesignerRunway[]
+  Runway Runway[]
 
   @@map("designers")
 }
 
 model Runway {
-  id          String         @id @default(uuid())
-  link        String         @unique
-  slug        String         @unique @db.VarChar(150)
-  collection  CollectionType
-  brandId     String
-  popularity  Int            @default(0)
-  validated   Boolean        @default(true)
-  year        Int
-  createdAt   DateTime       @default(now()) @map("created_at")
-  updatedAt   DateTime       @updatedAt @map("updated_at")
-  description String?
+  id             String         @id @default(uuid())
+  link           String         @unique
+  slug           String         @unique @db.VarChar(150)
+  brandId        String         @map("brand_id")
+  designerId     String         @map("designer_id")
+  popularity     Int            @default(0)
+  validated      Boolean        @default(false)
+  year           Int
+  createdAt      DateTime       @default(now()) @map("created_at")
+  updatedAt      DateTime       @updatedAt @map("updated_at")
+  collectionType CollectionType @map("collection_type")
+  description    String?
 
-  brand             Brand               @relation(fields: [brandId], references: [id])
-  tags              RunwayTag[]
-  DesignerRunway    DesignerRunway[]
-  RunwayContributor RunwayContributor[]
-  RunwayImage       RunwayImage[]
+  brand        Brand               @relation(fields: [brandId], references: [id])
+  designer     Designer            @relation(fields: [designerId], references: [id])
+  tags         RunwayTag[]
+  contributors RunwayContributor[]
+  images       RunwayImage[]
 
   @@map("runways")
 }
 
 model RunwayImage {
   id        String   @id @default(uuid())
-  runwayId  String
+  runwayId  String   @map("runway_id")
   url       String   @db.VarChar(500)
-  publicId  String   @db.VarChar(300)
+  publicId  String   @map("public_id") @db.VarChar(300)
   format    String?
   width     Int?
   height    Int?
@@ -90,26 +92,14 @@ model RunwayContributor {
   @@map("runway_contributors")
 }
 
-model DesignerRunway {
-  id         String @id @default(uuid())
-  designerId String @map("designer_id")
-  runwayId   String @map("runway_id")
-
-  Designer Designer @relation(fields: [designerId], references: [id])
-  Runway   Runway   @relation(fields: [runwayId], references: [id])
-
-  @@unique([designerId, runwayId])
-  @@map("designer_runways")
-}
-
 model Brand {
   id          String   @id @default(uuid())
   name        String   @db.VarChar(100)
   slug        String   @unique @db.VarChar(100)
   description String?
+  validated   Boolean  @default(false)
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
-  validated   Boolean  @default(true)
 
   Runway Runway[]
 
