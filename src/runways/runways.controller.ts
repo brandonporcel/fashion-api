@@ -45,7 +45,6 @@ export class RunwaysController {
     @Body() createRunwayDto: CreateRunwayDto,
     @UploadedFiles() images: Express.Multer.File[],
   ) {
-    console.log('llegue acá');
     return this.runwaysService.create(createRunwayDto, images);
   }
 }

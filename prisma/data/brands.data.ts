@@ -1,17 +1,17 @@
 export const BRANDS = [
   {
-    name: 'Nike',
-    slug: 'nike',
+    name: 'Prada',
+    slug: 'prada',
+    description: '...',
+  },
+  {
+    name: 'Valentino',
+    slug: 'valentino',
     description: '...',
   },
   {
     name: 'Versace',
     slug: 'versace',
-    description: '...',
-  },
-  {
-    name: 'Botega beneta',
-    slug: 'botega_veneta',
     description: '...',
   },
 ];

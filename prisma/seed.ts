@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { BRANDS, CRITICS, DESIGNERS, QUOTES, TAGS } from './data';
+import { UNFOUND_RUNWAYS } from './data/unfound.data';
 
 const prisma = new PrismaClient();
 async function main() {
@@ -46,6 +47,7 @@ async function main() {
       update: {},
       create: {
         name: dsg.name,
+        thumbnailUrl: dsg.thumbnailUrl,
         lastName: dsg.lastName,
         slug: dsg.slug,
         dateOfBirth: dsg.dateOfBirth,
@@ -53,6 +55,8 @@ async function main() {
       },
     });
   });
+
+  await prisma.unfoundRunway.createMany({ data: UNFOUND_RUNWAYS });
 
   console.log('Seed executed successfully! 🚀');
 }

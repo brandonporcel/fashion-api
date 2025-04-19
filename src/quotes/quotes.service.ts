@@ -22,4 +22,11 @@ export class QuotesService {
 
     return quote;
   }
+
+  async getRandom() {
+    const count = await this.prismaService.quote.count();
+    const randomIndex = Math.floor(Math.random() * count);
+
+    return await this.prismaService.quote.findFirst({ skip: randomIndex });
+  }
 }
