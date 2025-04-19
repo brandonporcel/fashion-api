@@ -95,8 +95,7 @@ npm run start:dev
 - [ ] Buzqueda indezada (https://youtu.be/Osy0yuxuEOw?si=ZrZ6mBrukJHTNmf9)
 - [ ] que los contributors puedan dar detalles sobre x imagen de desfile como genius. check imagenes
 - [ ] en un futuro laburar con insignias como musixmatch
-- [ ] usar cloudinary
-- [ ] host a db https://www.linkedin.com/posts/midudev_hostings-para-tu-base-de-datos-sin-pagar-activity-7219683962527330304-ZQ37/
+- [ ] Envio mails para notificar de nuevo runway
 
 ## Technologies Used
 

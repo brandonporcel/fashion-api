@@ -14,6 +14,12 @@ export class QuotesController {
     return this.quotesService.findAll(paginationDto);
   }
 
+  @Get('random')
+  @ApiResponse({ status: 200, description: 'Random quote' })
+  getRandomQuote() {
+    return this.quotesService.getRandom();
+  }
+
   @Get(':id')
   @ApiResponse({ status: 200, description: 'Quote found' })
   @ApiResponse({ status: 404, description: 'Quote not found' })

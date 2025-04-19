@@ -11,6 +11,7 @@ import { v2 as cloudinary } from 'cloudinary';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { CreateRunwayDto } from './dto/create-runway.dto';
+import { randomUUID } from 'crypto';
 
 @Injectable()
 export class RunwaysService {
@@ -52,7 +53,14 @@ export class RunwaysService {
       });
     } else {
       runway = await this.prismaService.runway.findFirst({
-        where: { slug: term + ''.toLowerCase() },
+        where: { slug: term },
+        include: {
+          brand: true,
+          images: true,
+          designer: true,
+          contributors: true,
+          tags: true,
+        },
       });
     }
     if (!runway) throw new NotFoundException(`Runway not found`);
@@ -68,7 +76,7 @@ export class RunwaysService {
     //   api_secret,
     // });
 
-    const slug = (createRunwayDto.collectionType + createRunwayDto.year + '')
+    const slug = (createRunwayDto.collectionType + '_' + createRunwayDto.year)
       .toLowerCase()
       .replaceAll(' ', '_')
       .replaceAll("'", '');
@@ -76,11 +84,12 @@ export class RunwaysService {
     try {
       const runway = await this.prismaService.runway.create({
         data: {
-          link: createRunwayDto.youtubeLink,
-          slug,
+          link: createRunwayDto.youtubeLink + randomUUID(),
+          designerId: createRunwayDto.designerId,
+          slug: slug + randomUUID(),
           description: createRunwayDto.description,
           brandId: createRunwayDto.brandId,
-          collection: createRunwayDto.collectionType,
+          collectionType: createRunwayDto.collectionType,
           year: createRunwayDto.year,
         },
       });
