@@ -27,6 +27,12 @@ export class QuotesService {
     const count = await this.prismaService.quote.count();
     const randomIndex = Math.floor(Math.random() * count);
 
-    return await this.prismaService.quote.findFirst({ skip: randomIndex });
+    const quote = await this.prismaService.quote.findFirst({
+      skip: randomIndex,
+    });
+
+    if (!quote) throw new NotFoundException(`Quote not found`);
+
+    return quote;
   }
 }
