@@ -10,9 +10,8 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const port = configService.get('PORT');
 
-  app.setGlobalPrefix('api');
   app.enableCors();
-  app.setGlobalPrefix('api');
+  app.setGlobalPrefix('api', { exclude: ['/ping'] });
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,

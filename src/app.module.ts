@@ -10,6 +10,8 @@ import { CriticsModule } from './critics/critics.module';
 import { RunwaysModule } from './runways/runways.module';
 import { DesignersModule } from './designers/designers.module';
 import { UnfoundRunwaysModule } from './unfound-runways/unfound-runways.module';
+import { PingModule } from './ping/ping.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -17,6 +19,7 @@ import { UnfoundRunwaysModule } from './unfound-runways/unfound-runways.module';
       isGlobal: true,
       load: [appConfig],
     }),
+    ScheduleModule.forRoot(),
     QuotesModule,
     PrismaModule,
     CommonModule,
@@ -25,6 +28,7 @@ import { UnfoundRunwaysModule } from './unfound-runways/unfound-runways.module';
     RunwaysModule,
     DesignersModule,
     UnfoundRunwaysModule,
+    PingModule,
   ],
   controllers: [],
   providers: [PrismaService],
