@@ -11,7 +11,8 @@ export class PingService {
   async handleCron() {
     try {
       this.logger.debug('Ejecutando ping para despertar ...');
-      await axios.get('https://fashion-api-1-74i5.onrender.com/api/ping');
+      const url = process.env.BASE_URL + '/api/ping';
+      await axios.get(url);
       this.logger.debug('Ping exitoso');
     } catch (error) {
       this.logger.error('Error al hacer ping:', error.message);

@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { ScheduleModule } from '@nestjs/schedule';
 import { appConfig } from './config';
 import { QuotesModule } from './quotes/quotes.module';
 import { PrismaService } from './prisma/prisma.service';
@@ -11,7 +12,6 @@ import { RunwaysModule } from './runways/runways.module';
 import { DesignersModule } from './designers/designers.module';
 import { UnfoundRunwaysModule } from './unfound-runways/unfound-runways.module';
 import { PingModule } from './ping/ping.module';
-import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
