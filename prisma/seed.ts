@@ -4,37 +4,37 @@ import { UNFOUND_RUNWAYS } from './data/unfound.data';
 
 const prisma = new PrismaClient();
 async function main() {
-  // for (const quote of BRANDS) {
-  //   await prisma.brand.upsert({
-  //     where: { slug: quote.slug },
-  //     update: {},
-  //     create: {
-  //       name: quote.name,
-  //       slug: quote.slug,
-  //       description: quote?.description,
-  //     },
-  //   });
-  // }
+  for (const quote of BRANDS) {
+    await prisma.brand.upsert({
+      where: { slug: quote.slug },
+      update: {},
+      create: {
+        name: quote.name,
+        slug: quote.slug,
+        description: quote?.description,
+      },
+    });
+  }
 
-  // await prisma.critic.deleteMany({});
-  // await prisma.critic.createMany({ data: CRITICS });
+  await prisma.critic.deleteMany({});
+  await prisma.critic.createMany({ data: CRITICS });
 
-  // for (const dsg of DESIGNERS) {
-  //   await prisma.designer.upsert({
-  //     where: { slug: dsg.slug },
-  //     update: { thumbnailUrl: dsg.thumbnailUrl },
-  //     create: {
-  //       name: dsg.name,
-  //       thumbnailUrl: dsg.thumbnailUrl,
-  //       lastName: dsg.lastName,
-  //       slug: dsg.slug,
-  //       dateOfBirth: dsg.dateOfBirth,
-  //       dateOfDeath: dsg.dateOfDeath,
-  //     },
-  //   });
-  // }
+  for (const dsg of DESIGNERS) {
+    await prisma.designer.upsert({
+      where: { slug: dsg.slug },
+      update: { thumbnailUrl: dsg.thumbnailUrl },
+      create: {
+        name: dsg.name,
+        thumbnailUrl: dsg.thumbnailUrl,
+        lastName: dsg.lastName,
+        slug: dsg.slug,
+        dateOfBirth: dsg.dateOfBirth,
+        dateOfDeath: dsg.dateOfDeath,
+      },
+    });
+  }
 
-  // await prisma.unfoundRunway.createMany({ data: UNFOUND_RUNWAYS });
+  await prisma.unfoundRunway.createMany({ data: UNFOUND_RUNWAYS });
 
   console.log('Seed executed successfully! 🚀');
 }
