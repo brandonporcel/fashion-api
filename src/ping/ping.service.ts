@@ -11,7 +11,7 @@ export class PingService {
   async handleCron() {
     try {
       this.logger.debug('Ejecutando ping para despertar ...');
-      const url = process.env.BASE_URL + '/api/ping';
+      const url = process.env.BASE_URL + '/ping';
       await axios.get(url);
       this.logger.debug('Ping exitoso');
     } catch (error) {
