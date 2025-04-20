@@ -19,7 +19,7 @@ export class BrandsService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async findAll(paginationDto: PaginationDto) {
-    const { limit = 10, offset = 0 } = paginationDto;
+    const { limit, offset = 0 } = paginationDto;
 
     const brands = await this.prismaService.brand.findMany({
       take: limit,

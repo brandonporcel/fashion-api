@@ -10,7 +10,7 @@ export class DesignersService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async findAll(paginationDto: PaginationDto) {
-    const { limit = 10, offset = 0 } = paginationDto;
+    const { limit, offset = 0 } = paginationDto;
 
     const designers = await this.prismaService.designer.findMany({
       take: limit,
