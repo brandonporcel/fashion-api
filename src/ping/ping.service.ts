@@ -7,7 +7,7 @@ const EVERY_8_MINUTES = '*/8 * * * *';
 export class PingService {
   private readonly logger = new Logger(PingService.name);
 
-  @Cron(EVERY_5_MINUTES)
+  @Cron(EVERY_8_MINUTES)
   async handleCron() {
     try {
       this.logger.debug('Ejecutando ping para despertar ...');
