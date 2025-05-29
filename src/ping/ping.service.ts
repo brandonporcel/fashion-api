@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import axios from 'axios';
 
-const EVERY_5_MINUTES = '*/5 * * * *';
+const EVERY_8_MINUTES = '*/8 * * * *';
 @Injectable()
 export class PingService {
   private readonly logger = new Logger(PingService.name);
