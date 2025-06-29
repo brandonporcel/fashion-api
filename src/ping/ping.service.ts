@@ -12,7 +12,9 @@ export class PingService {
     try {
       this.logger.debug('Ejecutando ping para despertar ...');
       const url = process.env.BASE_URL + '/ping';
+      const url2 = 'https://ropero-backend.onrender.com/api/ping';
       await axios.get(url);
+      await axios.get(url2);
       this.logger.debug('Ping exitoso');
     } catch (error) {
       this.logger.error('Error al hacer ping:', error.message);
