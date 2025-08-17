@@ -15,7 +15,7 @@ import { randomUUID } from 'crypto';
 
 @Injectable()
 export class RunwaysService {
-  private readonly logger = new Logger('RunwaysService');
+  private readonly logger = new Logger(RunwaysService.name);
   constructor(private readonly prismaService: PrismaService) {}
 
   async findAll(paginationDto: PaginationDto) {

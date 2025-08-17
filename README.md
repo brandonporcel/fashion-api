@@ -2,17 +2,19 @@
 
 Fashion Channel API is a RESTful API that provides structured data about fashion, including designers, runway shows, collections, models, brands, and fashion critics.
 
-> For the Spanish version of this README, click [here](README_ES.md).
-
 ## 🌍 Live Documentation (Swagger UI)
 
-Explore the API interactively with our [Swagger documentation](https://fashion-api-1-74i5.onrender.com/docs).
+Explore the API interactively with our [Swagger documentation](https://fashion-api-v0p3.onrender.com/docs).
+
+<!-- https://fashion.apidocumentation.com -->
 
 ## 🏢 Install
 
 ```bash
 git clone https://github.com/brandonporcel/fashion-api.git
 cd fashion-api
+npm i
+npx prisma generate
 npm run start:dev
 ```
 

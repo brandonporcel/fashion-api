@@ -14,7 +14,7 @@ import { CreateBrandDto } from './dto/create-brand.dto';
 
 @Injectable()
 export class BrandsService {
-  private readonly logger = new Logger('BrandsService');
+  private readonly logger = new Logger(BrandsService.name);
 
   constructor(private readonly prismaService: PrismaService) {}
 
