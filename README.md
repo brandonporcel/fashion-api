@@ -30,7 +30,8 @@ npm run start:dev
 - [ ] que los contributors puedan dar detalles sobre x imagen de desfile como genius. check imagenes
 - [ ] en un futuro laburar con insignias como musixmatch
 - [ ] Envio mails para notificar de nuevo runway
-- [ ] Agregar a seeder revistas/creadores a https://www.instagram.com/storytimefashionedition/
+- [ ] Agregar a seeder revistas/creadores a https://www.instagram.com/storytimefashionedition/, https://www.tiktok.com/@maile.hiber
+- [ ] explicacion de roles: diseñador, director creativo, etc
 
 ## Feedback
 
