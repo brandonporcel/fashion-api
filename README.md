@@ -32,6 +32,7 @@ npm run start:dev
 - [ ] Envio mails para notificar de nuevo runway
 - [ ] Agregar a seeder revistas/creadores a https://www.instagram.com/storytimefashionedition/, https://www.tiktok.com/@maile.hiber
 - [ ] explicacion de roles: diseñador, director creativo, etc
+- [ ] ver runways de armani https://www.instagram.com/p/DOMFoMgEWYJ/
 
 ## Feedback
 
