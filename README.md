@@ -30,7 +30,7 @@ npm run start:dev
 - [ ] que los contributors puedan dar detalles sobre x imagen de desfile como genius. check imagenes
 - [ ] en un futuro laburar con insignias como musixmatch
 - [ ] Envio mails para notificar de nuevo runway
-- [ ] Agregar a seeder revistas/creadores a https://www.instagram.com/storytimefashionedition/, https://www.tiktok.com/@maile.hiber, taconymantilla, sihablarademoda, safirocristal, farfelu_look, soygerardcortez, lapequenapasarela
+- [ ] Agregar a seeder revistas/creadores a https://www.youtube.com/StoryTimeFashionEdition, https://www.tiktok.com/@maile.hiber, taconymantilla, sihablarademoda, podcast modagrafias, lapequenapasarela
 - [ ] explicacion de roles: diseñador, director creativo, etc
 - [ ] ver runways de armani https://www.instagram.com/p/DOMFoMgEWYJ/
 
